@@ -3,184 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoEngage Web SDK Test Page</title>
-    <link rel="icon" href="https://moengage.com/favicon.ico" type="image/x-icon">
+    <title>My Simple Website</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Make body at least full height of viewport */
+            margin: 0;
+            background-color: #f0f8ff; /* A light, pleasant background color */
+            color: #333; /* Dark grey text color */
+            text-align: center;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
         }
         h1 {
-            color: #007bff;
-            text-align: center;
+            color: #4682b4; /* A nice steel blue */
+            margin-bottom: 20px;
         }
         p {
-            margin-bottom: 1em;
+            font-size: 1.1em;
+            line-height: 1.6;
         }
-        .button-group {
-            text-align: center;
+        .footer {
             margin-top: 30px;
-        }
-        .button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #218838;
-        }
-        .info-box {
-            background-color: #e9f5e9;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 20px;
-            text-align: left;
-        }
-        code {
-            background-color: #eee;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        .highlight {
-            color: #dc3545;
-            font-weight: bold;
+            font-size: 0.9em;
+            color: #777;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Welcome to MoEngage Web SDK Test Page!</h1>
-
-        <div class="info-box">
-            <p>
-                This page is integrated with MoEngage using your provided details:
-                <br>
-                <span class="highlight">Workspace ID:</span> <code>4MYVPADPDICPCKMP49GOXVPN</code>
-                <br>
-                <span class="highlight">Data Center:</span> <code>dc_3</code> (which maps to <code>dataCenter.IND</code>)
-            </p>
-            <p>
-                When you load this page, the MoEngage SDK will initialize and send an "App Open" event.
-                Open your browser's developer console (F12) to see MoEngage SDK logs.
-            </p>
+        <h1>Welcome to My Simple Website!</h1>
+        <p>This is a very basic webpage created with just HTML and a bit of CSS for styling.</p>
+        <p>You can use this as a starting point for your projects, or just to get a feel for how web pages are structured.</p>
+        <div class="footer">
+            &copy; 2025 Simple Website
         </div>
-
-        <p>
-            Use the buttons below to trigger custom events and user attributes.
-        </p>
-
-        <div class="button-group">
-            <button class="button" onclick="trackProductView()">Track 'Product Viewed' Event</button>
-            <button class="button" onclick="setUserProperties()">Set User Properties</button>
-        </div>
-
-        <h2>How to Verify:</h2>
-        <ol class="info-box">
-            <li>
-                <strong>Browser Console:</strong> Open your browser's developer console (<kbd>F12</kbd> or right-click -> Inspect -> Console tab). You should see `[MoEngage]` logs indicating SDK initialization and event tracking.
-            </li>
-            <li>
-                <strong>MoEngage Dashboard:</strong>
-                <ul>
-                    <li>Log in to your MoEngage Dashboard.</li>
-                    <li>Navigate to **Analytics &gt; Live Stream**. You should see events like "App Open" and subsequently "Product Viewed" or "User Properties Updated" when you click the buttons.</li>
-                    <li>Navigate to **Audience &gt; All Users**. Search for the unique ID set (e.g., "webtest_user_...") to see the user profile and its attributes.</li>
-                </ul>
-            </li>
-        </ol>
     </div>
-
-    <script>
-        // --- MoEngage Web SDK Initialization ---
-        // Provided Workspace ID: 4MYVPADPDICPCKMP49GOXVPN
-        // Provided Data Center: dashboard-03 (maps to dataCenter.IND)
-
-        (function (i, s, o, g, r, a, m) {
-            i['moengage_object'] = r;
-            t = {};
-            t.listener = [];
-            i[r] = function () {
-                (i[r].q = i[r].q || []).push(arguments);
-            };
-            a = s.createElement(o);
-            m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m);
-        })(
-            window,
-            document,
-            'script',
-            'https://cdn.moengage.com/webpush/moe_script.min.js',
-            'moe'
-        );
-
-        moe.initialize({
-            appId: '4MYVPADPDICPCKMP49GOXVPN', // YOUR WORKSPACE ID
-            debugLog: true, // Set to true for verbose logging in console
-            dataCenter: dataCenter.IND // YOUR DATA CENTER (dashboard-03 maps to dataCenter.IND)
-        });
-
-        // --- Custom Event Tracking Functions ---
-
-        function trackProductView() {
-            if (typeof moe !== 'undefined' && moe.track_event) {
-                moe.track_event("Product Viewed", {
-                    productName: "Sample Web Product",
-                    productId: "WEB-P-001",
-                    category: "Digital Goods",
-                    price: 29.99,
-                    currency: "USD"
-                });
-                console.log("[MoEngage Test] 'Product Viewed' event tracked.");
-            } else {
-                console.warn("[MoEngage Test] MoEngage SDK not initialized or track_event not available.");
-            }
-        }
-
-        function setUserProperties() {
-            if (typeof moe !== 'undefined' && moe.set_user_attribute) {
-                const uniqueId = "webuser_" + Math.floor(Math.random() * 1000000); // Generate a simple unique ID
-                moe.user.set_unique_id(uniqueId); // Set a unique ID for the user
-                moe.set_user_attribute("user_name", "Web Tester " + new Date().toLocaleTimeString());
-                moe.set_user_attribute("user_email", "webtest_" + uniqueId + "@example.com");
-                moe.set_user_attribute("is_test_profile", true);
-                moe.set_user_attribute("last_web_interaction", new Date());
-
-                console.log("[MoEngage Test] User properties set. Unique ID: " + uniqueId);
-            } else {
-                console.warn("[MoEngage Test] MoEngage SDK not initialized or set_user_attribute not available.");
-            }
-        }
-
-        // Optional: You might want to track an initial page load event
-        // (MoEngage often tracks "App Open" equivalent on web by default,
-        // but explicit tracking can be useful for specific analytics needs)
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("[MoEngage Test] Page loaded. SDK should have initialized and sent initial events.");
-        });
-
-    </script>
 </body>
 </html>
