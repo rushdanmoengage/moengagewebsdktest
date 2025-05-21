@@ -85,6 +85,8 @@
             // Your login code will go here
             console.log("Login button clicked! (Placeholder function)");
 
+            Moengage.add_unique_user_id(12345678910); // UNIQUE_ID is used to uniquely identify a user.
+
             // Example: You would typically add MoEngage tracking here after successful login
             // For example:
             // if (typeof Moengage !== 'undefined') {
@@ -103,6 +105,8 @@
             //     Moengage.track_event("Logout Successful", { method: "web_button" });
             //     Moengage.destroy_session(); // To clear the user's session in MoEngage
             // }
+
+            	Moengage.destroy_session();
         }
     </script>
 </head>
