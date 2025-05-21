@@ -93,6 +93,13 @@
 	        Moengage.add_user_name("Dominick (Dom) Cobb"); // Full name for user
 	        Moengage.add_gender("M");
 	        Moengage.add_birthday(new Date(1980, 2, 31));
+
+			Moengage.track_event("Purchase", {
+			"quantity":2,
+			"product_name":"Ipad mini",
+			"price": 599.99,
+			"currency": "USD"
+		});
         }
 
         function handleLogout() {
