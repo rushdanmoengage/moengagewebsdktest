@@ -108,6 +108,24 @@
 
             	Moengage.destroy_session();
         }
+
+
+
+	
+	<script type="text/javascript" src="https://cdn.moengage.com/webpush/moe_webSdk.min.latest.js>
+	<script type="text/javascript">
+	Moengage = moe(
+	 {
+	   app_id: "YOUR_APP_ID_GOES_HERE"
+	  });
+	///call to show the browser's native notification opt-in box.
+	Moengage.call_web_push();
+	</script>
+
+
+
+
+	    
     </script>
 </head>
 <body>
