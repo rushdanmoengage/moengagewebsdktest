@@ -67,7 +67,7 @@
             color: #777;
         }
 
-        /* --- Styles for Notification Bell and a simple placeholder widget --- */
+        /* --- Styles for Notification Bell --- */
         .notification-bell {
             position: fixed; /* Fixed position on the screen */
             top: 20px;
@@ -112,42 +112,10 @@
             text-align: center;
             line-height: 1; /* Adjust line height for better vertical centering */
         }
-
-        /* Placeholder for your notification content */
-        .notification-content-widget {
-            position: fixed;
-            top: 70px; /* Below the bell */
-            right: 20px;
-            width: 300px;
-            max-height: 400px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 999;
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 15px;
-            box-sizing: border-box;
-            text-align: left; /* Align content to the left */
-        }
-
-        .notification-content-widget.active {
-            display: flex; /* Show when active */
-        }
-
-        .notification-content-widget h2 {
-            margin-top: 0;
-            color: #4682b4;
-            font-size: 1.3em;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
     </style>
 
     <script type="text/javascript">
-        // MoEngage SDK initialization (kept for context of your original code, but not directly used by the bell itself)
+        // MoEngage SDK initialization (kept for context of your original code)
         var moeDataCenter = "dc_3";
         var moeAppID = "4MYVPADPDICPCKMP49GOXVPN";
         var sdkVersion = "2";
@@ -158,10 +126,11 @@
             app_id: moeAppID,
             debug_logs: 1,
             swPath:'rushdanmoengage.github.io/moengagewebsdktest/serviceworker.js',
+            // --- MoEngage Cards configuration ---
             cards: {
-                  enable: true,
-                  placeholder: 'notificationBell' // CSS selector of inbox icon 
-                } 
+                enable: true,
+                placeholder: '#notificationBell' // Tell MoEngage to use YOUR bell icon to open the Cards inbox
+            }
         });
 
 
@@ -192,31 +161,14 @@
             Moengage.destroy_session();
         }
 
-        // --- JavaScript for Notification Bell and Placeholder Widget ---
+        // --- JavaScript for Notification Bell (only badge handling) ---
         document.addEventListener('DOMContentLoaded', () => {
-            const bellIcon = document.getElementById('notificationBell');
             const notificationBadge = document.getElementById('notificationBadge');
-            const notificationWidget = document.getElementById('notificationWidget');
 
-            // Toggle the notification widget visibility when the bell is clicked
-            bellIcon.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent this click from immediately closing the widget via document listener
-                notificationWidget.classList.toggle('active');
-
-                // Optional: Hide the badge when the bell is clicked, assuming user views notifications
-                notificationBadge.style.display = 'none';
-            });
-
-            // Close the widget if clicking anywhere outside of it or the bell
-            document.addEventListener('click', (event) => {
-                // If the click is not inside the widget AND not on the bell icon
-                if (!notificationWidget.contains(event.target) && !bellIcon.contains(event.target)) {
-                    notificationWidget.classList.remove('active');
-                }
-            });
-
-            // --- Example: How to update the badge count (replace with your actual logic) ---
-            let unreadCount = 3; // For demonstration, set an initial unread count
+            // --- Example: How to update the badge count (replace with actual MoEngage API for unread count) ---
+            // You would use MoEngage's Onsite API or a specific Cards API (if available)
+            // to get the actual number of unread cards and update this badge.
+            let unreadCount = 3; // Placeholder value for demonstration
 
             if (unreadCount > 0) {
                 notificationBadge.textContent = unreadCount;
@@ -224,19 +176,17 @@
             } else {
                 notificationBadge.style.display = 'none'; // Hide if no unread notifications
             }
+
+            // The click event listener for the bell is now handled by MoEngage SDK directly
+            // due to the `placeholder: '#notificationBell'` configuration.
+            // So, no need for `bellIcon.addEventListener('click', ...)` here for opening the widget.
+            // We only keep the badge update logic.
         });
     </script>
 </head>
 <body>
     <div class="notification-bell" id="notificationBell">
         <span class="bell-icon">&#128276;</span> <span class="badge" id="notificationBadge"></span>
-    </div>
-
-    <div class="notification-content-widget" id="notificationWidget">
-        <h2>Your Notifications</h2>
-        <p>This is a placeholder for your notification content.</p>
-        <p>You can populate this area dynamically with messages or other information.</p>
-        <p>This widget appears when the bell icon is clicked.</p>
     </div>
 
     <div class="container">
