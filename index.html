@@ -157,7 +157,11 @@
         Moengage = moe({
             app_id: moeAppID,
             debug_logs: 1,
-            swPath:'rushdanmoengage.github.io/moengagewebsdktest/serviceworker.js'
+            swPath:'rushdanmoengage.github.io/moengagewebsdktest/serviceworker.js',
+            cards: {
+                  enable: true,
+                  placeholder: 'notificationBell' // CSS selector of inbox icon 
+                } 
         });
 
 
