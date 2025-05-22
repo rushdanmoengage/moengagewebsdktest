@@ -161,7 +161,7 @@
             Moengage.destroy_session();
         }
 
-        // --- JavaScript for Notification Bell Badge Updates with MoEngage Cards APIs ---
+        // --- JavaScript for Notification Bell Badge Updates and MoEngage Cards API Callbacks ---
         document.addEventListener('DOMContentLoaded', () => {
             const notificationBadge = document.getElementById('notificationBadge');
 
@@ -195,15 +195,40 @@
             // 3. Register callback for when NEW cards become available
             Moengage.cards.onNewCardsAvailable(event => {
                 console.log("MoEngage: New Cards Available!", event);
-                // You might want to play a sound, show a specific animation, etc. here
+                // You can add custom logic here, e.g., play a sound, animate the bell
                 updateBadge(); // Ensure badge is updated for new cards
             });
 
             // 4. Register callback for when unread cards are cleared
             Moengage.cards.onNewCardsCleared(event => {
                 console.log("MoEngage: New Cards Cleared!", event);
-                // You might want to remove a "new" indicator if you have one
+                // You can add custom logic here, e.g., remove a "new" indicator
                 updateBadge(); // Ensure badge is updated when cards are cleared
+            });
+
+            // --- NEW: Inbox Open/Close and Card Click Callbacks ---
+
+            // 5. Register callback for when the Cards Inbox is opened
+            Moengage.cards.onInboxOpen(event => {
+                console.log("MoEngage: Cards Inbox Opened!", event);
+                // You might want to track this event in your analytics
+                // Or potentially hide the badge if it's still visible (though updateBadge should handle this)
+                updateBadge(); // The act of opening might imply viewing, so refresh count
+            });
+
+            // 6. Register callback for when the Cards Inbox is closed
+            Moengage.cards.onInboxClose(event => {
+                console.log("MoEngage: Cards Inbox Closed!", event);
+                // You might want to track this event
+                updateBadge(); // Ensure badge is updated after closing, in case cards were read
+            });
+
+            // 7. Register callback for when a card inside the Inbox is clicked
+            Moengage.cards.onCardClick(event => {
+                console.log("MoEngage: Card Clicked!", event);
+                // 'event' object will contain details about the clicked card
+                // You can use this to perform custom actions based on the card content
+                updateBadge(); // Clicking a card usually marks it as read, so update the badge
             });
 
             // Note: The click event for the bell icon is handled by MoEngage SDK
