@@ -8,13 +8,13 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column; /* Changed to column to stack elements */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Make body at least full height of viewport */
+            min-height: 100vh;
             margin: 0;
-            background-color: #f0f8ff; /* A light, pleasant background color */
-            color: #333; /* Dark grey text color */
+            background-color: #f0f8ff;
+            color: #333;
             text-align: center;
         }
         .container {
@@ -24,22 +24,22 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 600px;
             width: 90%;
-            margin-bottom: 20px; /* Added space below the container */
+            margin-bottom: 20px;
         }
         h1 {
-            color: #4682b4; /* A nice steel blue */
+            color: #4682b4;
             margin-bottom: 20px;
         }
         p {
             font-size: 1.1em;
             line-height: 1.6;
-            margin-bottom: 25px; /* Added space below paragraphs */
+            margin-bottom: 25px;
         }
-        .button-group { /* Added styling for button group */
+        .button-group {
             margin-top: 20px;
         }
-        .action-button { /* Styling for the new buttons */
-            background-color: #4CAF50; /* Green */
+        .action-button {
+            background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
             text-align: center;
@@ -52,8 +52,8 @@
             border: none;
             transition: background-color 0.3s ease;
         }
-        .action-button.logout { /* Specific style for logout button */
-            background-color: #f44336; /* Red */
+        .action-button.logout {
+            background-color: #f44336;
         }
         .action-button:hover {
             background-color: #45a049;
@@ -66,56 +66,175 @@
             font-size: 0.9em;
             color: #777;
         }
+
+        /* --- Styles for Notification Bell and a simple placeholder widget --- */
+        .notification-bell {
+            position: fixed; /* Fixed position on the screen */
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #ff9800; /* Orange bell */
+            border-radius: 50%; /* Makes it circular */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it's on top */
+            transition: background-color 0.3s ease;
+        }
+
+        .notification-bell:hover {
+            background-color: #e68900;
+        }
+
+        .notification-bell .bell-icon {
+            font-size: 24px;
+            color: white;
+            /* Using a simple bell icon from a common font set, e.g., Font Awesome.
+               If you don't use Font Awesome, you'd need to use an SVG or image.
+               For this example, we'll just use a unicode character as a placeholder. */
+        }
+
+        .notification-bell .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #f44336; /* Red badge */
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            display: none; /* Hidden by default, show with JavaScript */
+            border: 1px solid white;
+            min-width: 10px; /* Ensure badge has some width even for single digits */
+            text-align: center;
+            line-height: 1; /* Adjust line height for better vertical centering */
+        }
+
+        /* Placeholder for your notification content */
+        .notification-content-widget {
+            position: fixed;
+            top: 70px; /* Below the bell */
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: left; /* Align content to the left */
+        }
+
+        .notification-content-widget.active {
+            display: flex; /* Show when active */
+        }
+
+        .notification-content-widget h2 {
+            margin-top: 0;
+            color: #4682b4;
+            font-size: 1.3em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
     </style>
 
     <script type="text/javascript">
-        var moeDataCenter = "dc_3"; // Replace "DC" with the actual Data center value from the above table
-        var moeAppID = "4MYVPADPDICPCKMP49GOXVPN"; // Replace "WorkspaceID" available in the settings page of MoEngage Dashboard.
-        var sdkVersion = "2"; // Replace this value with the version of Web SDK that you intend to use. It is recommended to use the format x (major)
+        // MoEngage SDK initialization (kept for context of your original code, but not directly used by the bell itself)
+        var moeDataCenter = "dc_3";
+        var moeAppID = "4MYVPADPDICPCKMP49GOXVPN";
+        var sdkVersion = "2";
 
         !function(e,n,i,t,a,r,o,d){if(!moeDataCenter||!moeDataCenter.match(/^dc_[0-9]+$/gm))return console.error("Data center has not been passed correctly. Please follow the SDK installation instruction carefully.");var s=e[a]=e[a]||[];if(s.invoked=0,s.initialised>0||s.invoked>0)return console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1;e.moengage_object=a;var l={},g=function n(i){return function(){for(var n=arguments.length,t=Array(n),a=0;a<n;a++)t[a]=arguments[a];(e.moengage_q=e.moengage_q||[]).push({f:i,a:t})}},u=["track_event","add_user_attribute","add_first_name","add_last_name","add_email","add_mobile","add_user_name","add_gender","add_birthday","destroy_session","add_unique_user_id","update_unique_user_id","moe_events","call_web_push","track","location_type_attribute"],m={onsite:["getData","registerCallback"]};for(var c in u)l[u[c]]=g(u[c]);for(var v in m)for(var f in m[v])null==l[v]&&(l[v]={}),l[v][m[v][f]]=g(v+"."+m[v][f]);r=n.createElement(i),o=n.getElementsByTagName("head")[0],r.async=1,r.src=t,o.appendChild(r),e.moe=e.moe||function(){return(s.invoked=s.invoked+1,s.invoked>1)?(console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1):(d=arguments.length<=0?void 0:arguments[0],l)},r.addEventListener("load",function(){if(d)return e[a]=e.moe(d),e[a].initialised=e[a].initialised+1||1,!0}),r.addEventListener("error",function(){return console.error("Moengage Web SDK loading failed."),!1})}(window,document,"script","https://cdn.moengage.com/release/"+moeDataCenter+"/versions/"+sdkVersion+"/moe_webSdk.min.latest.js","Moengage");
 
         Moengage = moe({
             app_id: moeAppID,
             debug_logs: 1,
-	    swPath:'rushdanmoengage.github.io/moengagewebsdktest/serviceworker.js'
+            swPath:'rushdanmoengage.github.io/moengagewebsdktest/serviceworker.js'
         });
 
 
-        // --- JavaScript Functions for Login and Logout ---
+        // --- JavaScript Functions for Login and Logout (from your original code) ---
         function handleLogin() {
-            // Your login code will go here
             console.log("Login button clicked! (Placeholder function)");
-	    Moengage.call_web_push();
+            Moengage.call_web_push();
 
-            Moengage.add_unique_user_id(12345678910); // UNIQUE_ID is used to uniquely identify a user.
+            Moengage.add_unique_user_id(12345678910);
             Moengage.add_first_name("Dominick");
-	        Moengage.add_last_name("Cobb");
-	        Moengage.add_email("dom@level5.com");
-	        Moengage.add_mobile("+12399999999");
-	        Moengage.add_user_name("Dominick (Dom) Cobb"); // Full name for user
-	        Moengage.add_gender("M");
-	        Moengage.add_birthday(new Date(1980, 2, 31));
+            Moengage.add_last_name("Cobb");
+            Moengage.add_email("dom@level5.com");
+            Moengage.add_mobile("+12399999999");
+            Moengage.add_user_name("Dominick (Dom) Cobb");
+            Moengage.add_gender("M");
+            Moengage.add_birthday(new Date(1980, 2, 31));
 
-			Moengage.track_event("Purchase", {
-			"quantity":2,
-			"product_name":"Ipad mini",
-			"price": 599.99,
-			"currency": "USD"
-		});
+            Moengage.track_event("Purchase", {
+                "quantity":2,
+                "product_name":"Ipad mini",
+                "price": 599.99,
+                "currency": "USD"
+            });
         }
 
         function handleLogout() {
-            // Your logout code will go here
             console.log("Logout button clicked! (Placeholder function)");
-
-            	Moengage.destroy_session();
+            Moengage.destroy_session();
         }
 
-	    
+        // --- JavaScript for Notification Bell and Placeholder Widget ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const bellIcon = document.getElementById('notificationBell');
+            const notificationBadge = document.getElementById('notificationBadge');
+            const notificationWidget = document.getElementById('notificationWidget');
+
+            // Toggle the notification widget visibility when the bell is clicked
+            bellIcon.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent this click from immediately closing the widget via document listener
+                notificationWidget.classList.toggle('active');
+
+                // Optional: Hide the badge when the bell is clicked, assuming user views notifications
+                notificationBadge.style.display = 'none';
+            });
+
+            // Close the widget if clicking anywhere outside of it or the bell
+            document.addEventListener('click', (event) => {
+                // If the click is not inside the widget AND not on the bell icon
+                if (!notificationWidget.contains(event.target) && !bellIcon.contains(event.target)) {
+                    notificationWidget.classList.remove('active');
+                }
+            });
+
+            // --- Example: How to update the badge count (replace with your actual logic) ---
+            let unreadCount = 3; // For demonstration, set an initial unread count
+
+            if (unreadCount > 0) {
+                notificationBadge.textContent = unreadCount;
+                notificationBadge.style.display = 'block'; // Show the badge
+            } else {
+                notificationBadge.style.display = 'none'; // Hide if no unread notifications
+            }
+        });
     </script>
 </head>
 <body>
+    <div class="notification-bell" id="notificationBell">
+        <span class="bell-icon">&#128276;</span> <span class="badge" id="notificationBadge"></span>
+    </div>
+
+    <div class="notification-content-widget" id="notificationWidget">
+        <h2>Your Notifications</h2>
+        <p>This is a placeholder for your notification content.</p>
+        <p>You can populate this area dynamically with messages or other information.</p>
+        <p>This widget appears when the bell icon is clicked.</p>
+    </div>
+
     <div class="container">
         <h1>Welcome to My Simple Website!</h1>
         <p>This is a very basic webpage created with just HTML and a bit of CSS for styling.</p>
