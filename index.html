@@ -81,13 +81,12 @@
 		
         });
 
-	    Moengage.call_web_push();
-
 
         // --- JavaScript Functions for Login and Logout ---
         function handleLogin() {
             // Your login code will go here
             console.log("Login button clicked! (Placeholder function)");
+	    Moengage.call_web_push();
 
             Moengage.add_unique_user_id(12345678910); // UNIQUE_ID is used to uniquely identify a user.
             Moengage.add_first_name("Dominick");
