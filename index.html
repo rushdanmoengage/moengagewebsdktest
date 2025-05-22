@@ -115,7 +115,7 @@
     </style>
 
     <script type="text/javascript">
-        // MoEngage SDK initialization (kept for context of your original code)
+        // MoEngage SDK initialization
         var moeDataCenter = "dc_3";
         var moeAppID = "4MYVPADPDICPCKMP49GOXVPN";
         var sdkVersion = "2";
@@ -124,12 +124,12 @@
 
         Moengage = moe({
             app_id: moeAppID,
-            debug_logs: 1,
+            debug_logs: 1, // Set to 0 for production
             swPath:'rushdanmoengage.github.io/moengagewebsdktest/serviceworker.js',
             // --- MoEngage Cards configuration ---
             cards: {
                 enable: true,
-                placeholder: '#notificationBell' // Tell MoEngage to use YOUR bell icon to open the Cards inbox
+                placeholder: '#notificationBell' // Your bell icon will trigger the Cards inbox
             }
         });
 
@@ -161,30 +161,54 @@
             Moengage.destroy_session();
         }
 
-        // --- JavaScript for Notification Bell (only badge handling) ---
+        // --- JavaScript for Notification Bell Badge Updates with MoEngage Cards APIs ---
         document.addEventListener('DOMContentLoaded', () => {
             const notificationBadge = document.getElementById('notificationBadge');
 
-            // --- Example: How to update the badge count (replace with actual MoEngage API for unread count) ---
-            // You would use MoEngage's Onsite API or a specific Cards API (if available)
-            // to get the actual number of unread cards and update this badge.
-            let unreadCount = Moengage.cards.getUnClickedCardCount().then(unclickedCardCount => {
-    	console.log(unclickedCardCount); 
-    })
+            // Function to update the badge with the unclicked card count
+            const updateBadge = () => {
+                // MoEngage.cards.getUnClickedCardCount() returns a Promise
+                Moengage.cards.getUnClickedCardCount().then(unclickedCardCount => {
+                    console.log("Unclicked Card Count:", unclickedCardCount);
+                    if (unclickedCardCount > 0) {
+                        notificationBadge.textContent = unclickedCardCount;
+                        notificationBadge.style.display = 'block'; // Show the badge
+                    } else {
+                        notificationBadge.style.display = 'none'; // Hide if no unread notifications
+                    }
+                }).catch(error => {
+                    console.error("Error fetching unclicked card count:", error);
+                    notificationBadge.style.display = 'none'; // Hide badge on error
+                });
+            };
 
-            
+            // 1. Initial badge update when the page loads
+            updateBadge();
 
-            if (unreadCount > 0) {
-                notificationBadge.textContent = unreadCount;
-                notificationBadge.style.display = 'block'; // Show the badge
-            } else {
-                notificationBadge.style.display = 'none'; // Hide if no unread notifications
-            }
+            // 2. Register a callback to update the badge whenever cards data changes
+            //    (e.g., new cards arrive, cards are marked as read/clicked)
+            Moengage.cards.onCardsDataChanged(event => {
+                console.log("MoEngage Cards data changed event:", event);
+                updateBadge(); // Refresh badge on any data change
+            });
 
-            // The click event listener for the bell is now handled by MoEngage SDK directly
-            // due to the `placeholder: '#notificationBell'` configuration.
-            // So, no need for `bellIcon.addEventListener('click', ...)` here for opening the widget.
-            // We only keep the badge update logic.
+            // 3. Register callback for when NEW cards become available
+            Moengage.cards.onNewCardsAvailable(event => {
+                console.log("MoEngage: New Cards Available!", event);
+                // You might want to play a sound, show a specific animation, etc. here
+                updateBadge(); // Ensure badge is updated for new cards
+            });
+
+            // 4. Register callback for when unread cards are cleared
+            Moengage.cards.onNewCardsCleared(event => {
+                console.log("MoEngage: New Cards Cleared!", event);
+                // You might want to remove a "new" indicator if you have one
+                updateBadge(); // Ensure badge is updated when cards are cleared
+            });
+
+            // Note: The click event for the bell icon is handled by MoEngage SDK
+            // because of the `placeholder: '#notificationBell'` configuration in `Moengage.cards`.
+            // So, you don't need a separate JavaScript click listener here to open the MoEngage Cards UI.
         });
     </script>
 </head>
