@@ -168,7 +168,11 @@
             // --- Example: How to update the badge count (replace with actual MoEngage API for unread count) ---
             // You would use MoEngage's Onsite API or a specific Cards API (if available)
             // to get the actual number of unread cards and update this badge.
-            let unreadCount = 3; // Placeholder value for demonstration
+            let unreadCount = Moengage.cards.getUnClickedCardCount().then(unclickedCardCount => {
+    	console.log(unclickedCardCount); 
+    })
+
+            
 
             if (unreadCount > 0) {
                 notificationBadge.textContent = unreadCount;
