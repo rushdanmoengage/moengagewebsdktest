@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preconnect" href="https://cdn.moengage.com/" crossorigin />
+	<link rel="dns-prefetch" href="https://cdn.moengage.com/" />
+	<link rel="preconnect" href="https://sdk-01.moengage.com/" crossorigin />
+	<link rel="dns-prefetch" href="https://sdk-01.moengage.com/" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Simple Website</title>
@@ -93,8 +97,8 @@
             font-size: 24px;
             color: white;
             /* Using a simple bell icon from a common font set, e.g., Font Awesome.
-                If you don't use Font Awesome, you'd need to use an SVG or image.
-                For this example, we'll just use a unicode character as a placeholder. */
+               If you don't use Font Awesome, you'd need to use an SVG or image.
+               For this example, we'll just use a unicode character as a placeholder. */
         }
 
         .notification-bell .badge {
@@ -114,6 +118,8 @@
         }
     </style>
 
+    <script src="https://cdn.moengage.com/release/dc_1/versions/2/moe_webSdk_webp.min.latest.js?app_id=DMQ61NVM1B2JEK8USBS1H1CO"></script>
+
     <script type="text/javascript">
         // MoEngage SDK initialization
         var moeDataCenter = "dc_1";
@@ -130,38 +136,6 @@
             cards: {
                 enable: true,
                 placeholder: '#notificationBell' // Your bell icon will trigger the Cards inbox
-            }
-        });
-
-        // --- MoEngage Onsite Callback Integration ---
-        // This code is placed immediately after MoEngage initialization.
-        Moengage.onsite.registerCallback("tagName", function (err, data) {
-            if (err) {
-                // Handle error case here
-                console.error('Error from MoEngage onsite campaign:', err);
-                return;
-            }
-            console.log('Data for MoEngage onsite campaign:', data);
-            var payload = data.payload; // Campaign payload defined during campaign creation
-            var impTracker = data.imp; // Function to send impression stats
-            var clickTracker = data.click({widget_id:"sample_widget_id"}); // Function to send click stats
-
-            // You would typically render your personalized content here based on the 'payload'
-            // For example, if your payload is an object with a message:
-            // if (payload && payload.message) {
-            //     alert("Onsite message: " + payload.message);
-            //     impTracker(); // Call impTracker after rendering
-            // }
-
-            // Example of how you might use the clickTracker if you had an interactive element
-            // document.getElementById('someElementInYourPayload').addEventListener('click', () => {
-            //     clickTracker();
-            // });
-
-            // For now, we'll just log that data is received and call impTracker as if rendered.
-            if (payload) {
-                console.log("Onsite Campaign Payload:", payload);
-                impTracker(); // Call impTracker to indicate the campaign was "shown"
             }
         });
 
